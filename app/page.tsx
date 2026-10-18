@@ -4,7 +4,7 @@ const contohProduk: Produk = {
   id: "1",
   nama: "Indomie Goreng",
   harga: 3500,
-  stok: 50,
+  stok: 30,
 };
 
 export default function Home() {
