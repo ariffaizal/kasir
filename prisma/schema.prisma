@@ -1,0 +1,29 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client"
+  // Output default di node_modules, tapi Prisma 7 merekomendasikan custom output
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Tidak ada url di sini untuk Prisma 7
+}
+
+model Kategori {
+  id     String   @id @default(cuid())
+  nama   String
+  produk Produk[]
+}
+
+model Produk {
+  id         String   @id @default(cuid())
+  nama       String
+  barcode    String?  @unique
+  harga      Int
+  stok       Int      @default(0)
+  kategori   Kategori @relation(fields: [kategoriId], references: [id])
+  kategoriId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
