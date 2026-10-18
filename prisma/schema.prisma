@@ -17,13 +17,35 @@ model Kategori {
 }
 
 model Produk {
-  id         String   @id @default(cuid())
-  nama       String
-  barcode    String?  @unique
-  harga      Int
-  stok       Int      @default(0)
-  kategori   Kategori @relation(fields: [kategoriId], references: [id])
-  kategoriId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String          @id @default(cuid())
+  nama          String
+  barcode       String?         @unique
+  harga         Int
+  stok          Int             @default(0)
+  kategori      Kategori        @relation(fields: [kategoriId], references: [id])
+  kategoriId    String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  itemTransaksi ItemTransaksi[]
+}
+
+model Transaksi {
+  id        String          @id @default(cuid())
+  total     Int
+  bayar     Int
+  kembalian Int
+  items     ItemTransaksi[]
+  createdAt DateTime        @default(now())
+  status    String          @default("selesai") // untuk offline sync
+}
+
+model ItemTransaksi {
+  id          String    @id @default(cuid())
+  transaksi   Transaksi @relation(fields: [transaksiId], references: [id])
+  transaksiId String
+  produk      Produk    @relation(fields: [produkId], references: [id])
+  produkId    String
+  namaProduk  String // snapshot nama saat transaksi
+  hargaSatuan Int // snapshot harga
+  qty         Int
 }
